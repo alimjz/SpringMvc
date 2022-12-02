@@ -11,16 +11,17 @@ public class LogInterceptor implements HandlerInterceptor {
     Logger logger = LoggerFactory.getLogger(LogInterceptor.class);
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("PreHandle Interceptor invoked.");
+        System.out.println("Auth Type is: " + request.getAuthType());
         return true;
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         System.out.println("Post handle Interceptor invoked.");
-        logger.info("Request is : " + request.toString());
+        response.getHeaderNames().forEach(System.out::println);
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         System.out.println("After Completing Interceptor invoked.");
-        logger.info("Response is : " + response.toString());
+        System.out.println(handler.toString());
     }
 }
