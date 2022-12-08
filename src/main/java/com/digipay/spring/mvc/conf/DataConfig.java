@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -35,15 +36,17 @@ public class DataConfig {
         return lfb;
     }
 
+    @Bean
     public DataSource dataSource(){
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setUrl("jdbc:oracle:thin:@//localhost:1521/xepdb1");
-        ds.setUsername("hra");
-        ds.setPassword("hr");
-        ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        ds.setUrl("jdbc:mysql://localhost:3306/usermanagement");
+        ds.setUsername("root");
+        ds.setPassword("2050534205Ali");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         return ds;
     }
 
+    @Bean
     public Properties hibernateProps(){
         Properties properties = new Properties();
         properties.setProperty(PROPERTY_DIALECT,"org.hibernate.dialect.Oracle10gDialect");
@@ -51,6 +54,13 @@ public class DataConfig {
         properties.setProperty("hibernate.hbm2ddl.auto","update");
         return properties;
     }
+    @Bean
+    JpaTransactionManager transactionManager(){
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        return transactionManager;
+    }
+
 
 
 }
