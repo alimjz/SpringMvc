@@ -49,7 +49,7 @@ public class DataConfig {
     @Bean
     public Properties hibernateProps(){
         Properties properties = new Properties();
-        properties.setProperty(PROPERTY_DIALECT,"org.hibernate.dialect.Oracle10gDialect");
+        properties.setProperty(PROPERTY_DIALECT,"org.hibernate.dialect.MySQLDialect");
         properties.setProperty(PROPERTY_SHOW_SQL,"true");
         properties.setProperty("hibernate.hbm2ddl.auto","update");
         return properties;
