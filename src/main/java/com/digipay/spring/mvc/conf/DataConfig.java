@@ -26,7 +26,7 @@ public class DataConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean lfb = new LocalContainerEntityManagerFactoryBean();
-        lfb.setDataSource(datasource());
+        lfb.setDataSource(dataSource());
         lfb.setPackagesToScan("com.digipay.spring.mvc");
         lfb.setJpaProperties(hibernateProps());
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
