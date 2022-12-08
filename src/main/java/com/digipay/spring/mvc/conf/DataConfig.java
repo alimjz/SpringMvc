@@ -4,9 +4,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
@@ -20,7 +24,7 @@ public class DataConfig {
     private final String PROPERTY_SHOW_SQL = "hibernate.show_sql";
     private final String PROPERTY_DIALECT = "hibernate.dialect";
     @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
         LocalContainerEntityManagerFactoryBean lfb = new LocalContainerEntityManagerFactoryBean();
         lfb.setDataSource(datasource());
         lfb.setPackagesToScan("com.digipay.spring.mvc");
@@ -29,6 +33,23 @@ public class DataConfig {
         lfb.setJpaVendorAdapter(vendorAdapter);
         lfb.setPackagesToScan("com.digipay.spring.mvc");
         return lfb;
+    }
+
+    public DataSource dataSource(){
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setUrl("jdbc:oracle:thin:@//localhost:1521/xepdb1");
+        ds.setUsername("hra");
+        ds.setPassword("hr");
+        ds.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        return ds;
+    }
+
+    public Properties hibernateProps(){
+        Properties properties = new Properties();
+        properties.setProperty(PROPERTY_DIALECT,"org.hibernate.dialect.Oracle10gDialect");
+        properties.setProperty(PROPERTY_SHOW_SQL,"true");
+        properties.setProperty("hibernate.hbm2ddl.auto","update");
+        return properties;
     }
 
 
