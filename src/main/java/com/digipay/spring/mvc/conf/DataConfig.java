@@ -3,7 +3,7 @@ package com.digipay.spring.mvc.conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -15,7 +15,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.digipay.spring.mvc")
+//@EnableJpaRepositories("com.digipay.spring.mvc")
 @ComponentScan("com.digipay.spring.mvc")
 public class DataConfig {
     private final String PROPERTY_DRIVER = "driver";
@@ -25,7 +25,8 @@ public class DataConfig {
     private final String PROPERTY_SHOW_SQL = "hibernate.show_sql";
     private final String PROPERTY_DIALECT = "hibernate.dialect";
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(){
+    @Primary
+    public LocalContainerEntityManagerFactoryBean entityManager(){
         LocalContainerEntityManagerFactoryBean lfb = new LocalContainerEntityManagerFactoryBean();
         lfb.setDataSource(dataSource());
         lfb.setPackagesToScan("com.digipay.spring.mvc");
@@ -46,7 +47,7 @@ public class DataConfig {
         return ds;
     }
 
-    @Bean
+
     public Properties hibernateProps(){
         Properties properties = new Properties();
         properties.setProperty(PROPERTY_DIALECT,"org.hibernate.dialect.MySQLDialect");
@@ -55,9 +56,9 @@ public class DataConfig {
         return properties;
     }
     @Bean
-    JpaTransactionManager transactionManager(){
+    public JpaTransactionManager transactionManager(){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        transactionManager.setEntityManagerFactory(entityManager().getObject());
         return transactionManager;
     }
 
